@@ -1,0 +1,80 @@
+Fase 0: MVP para Hackathon (Actual – Semana del ETH Hackathon)
+
+Objetivo: Validar viabilidad técnica, mostrar innovación y entregar un prototipo funcional.
+
+Entregables:
+	•	Onboarding básico (login por correo o wallet)
+	•	Despliegue de smart contract en Mantle
+	•	Lógica inicial del test de riesgo
+	•	Generación de recompensas con tokens (simulada o en Solidity básica)
+	•	Interfaz mínima funcional (Next.js con tres módulos: Test, Wallet, Dashboard)
+	•	Documentación: Design Doc, Pitch Deck, Tokenomics en GitHub
+
+⸻
+
+Fase 1: Refinamiento Post-Hackathon (Mes 1 a 2)
+
+Objetivo: Preparar para piloto con ONGs y mejorar la experiencia de usuario.
+
+Funciones Técnicas:
+	•	Integración zkVM (Scroll) para análisis de riesgo privado
+	•	Módulo de clonación de voz (Whisper + TTS)
+	•	Módulo de wallet con balance y recompensas
+	•	Base de datos (Firebase/PostgreSQL) para progreso del usuario
+
+UX y Comunidad:
+	•	Interfaz optimizada para móviles y sensible a género
+	•	Alianzas con ONGs locales para pruebas piloto
+	•	Mapa geolocalizado con al menos 10 recursos verificados (terapias, refugios)
+
+⸻
+
+Fase 2: Lanzamiento Beta Cerrado (Mes 3 a 6)
+
+Objetivo: Validación en campo con usuarios reales y ONGs aliadas.
+
+Expansión Funcional:
+	•	Chat de IA para soporte emocional
+	•	Niveles de recompensa tokenizada con incentivos no financieros
+	•	Sistema de reportes anónimos (identidad con pruebas de conocimiento cero)
+
+Infraestructura Tecnológica:
+	•	Almacenamiento descentralizado (IPFS o Arweave)
+	•	Optimización de contratos en Mantle con auditoría inicial
+	•	Soporte multilenguaje (español, inglés, portugués)
+
+Análisis e Impacto:
+	•	Dashboard con métricas de uso e impacto social
+	•	Publicación de whitepaper
+	•	Primer borrador del modelo de gobernanza DAO
+
+⸻
+
+Fase 3: Lanzamiento Público y Escalamiento (Mes 6 a 12)
+
+Objetivo: Expansión regional, activación de gobernanza y fortalecimiento del ecosistema.
+
+Crecimiento del Producto:
+	•	Publicación en tiendas (Android/iOS vía React Native)
+	•	Sistema de referidos con recompensas
+	•	Rutas de empoderamiento modulares (finanzas, salud mental, seguridad legal)
+
+Gobernanza en Blockchain:
+	•	Lanzamiento del token $ALIADA con staking y quema parcial
+	•	Votaciones comunitarias sobre nuevos módulos o contenidos
+	•	Expansión a otras redes (Polygon, Base, Gnosis)
+
+Desarrollo del Ecosistema:
+	•	Programa de embajadores comunitarios
+	•	Integración con bases de datos gubernamentales
+	•	Alianzas con organizaciones financieras, educativas y psicológicas
+
+⸻
+
+Visión a Largo Plazo: Aliada como Protocolo de Impacto Social
+
+Aliada evoluciona hacia un protocolo para servicios sociales descentralizados con:
+	•	Agentes de IA para triage de casos
+	•	Asistencia legal anónima
+	•	Wallets multisig para planes de recuperación
+	•	Alianzas con gobiernos y organismos multilaterales
