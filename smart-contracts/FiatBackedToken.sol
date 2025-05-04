@@ -1,112 +1,70 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
-
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-
 /**
- * @title FiatBackedToken
- * @dev ERC20 token backed 1:1 by a USD stablecoin (e.g. USDC/USDT) on Mantle.
- * Only accounts with MINTER_BURNER_ROLE can mint or burn tokens.
- * Tokens are minted when fiat is deposited (and stablecoins are escrowed),
- * and burned when fiat is spent (stablecoins are sent to treasury).
+ * @title FiatBackedToken (AliadaUSD)
+ * @dev ERC20 token backed 1:1 by a USD stablecoin (e.g., USDT/USDC) on Mantle.
+ *      Only authorized minters (e.g., backend, bridge) can mint/burn tokens based on fiat/card activity.
+ *      Users interact with AliadaUSD as if with fiat, while the contract holds stablecoins as collateral.
  */
- 
-contract FiatBackedToken is ERC20, AccessControl {
-    using SafeERC20 for IERC20;
-    
-    bytes32 public constant MINTER_BURNER_ROLE = keccak256("MINTER_BURNER_ROLE");
-    IERC20 public immutable stablecoin; // e.g., USDC/USDT
-    address public treasury; // Holds the stablecoins
-
-    event TreasuryChanged(address indexed oldTreasury, address indexed newTreasury);
-    event StablecoinSwept(address indexed to, uint256 amount);
-    event TokensMinted(address indexed to, uint256 amount);
-    event TokensBurned(address indexed from, uint256 amount);
-
-    constructor(
-        address _stablecoin,
-        address _treasury,
-        address admin
-    ) ERC20("FiatBackedToken", "FIAT") {
-        require(_stablecoin != address(0), "Stablecoin address required");
-        require(_treasury != address(0), "Treasury address required");
-        require(admin != address(0), "Admin address required");
-        
+contract FiatBackedToken is ERC20, Ownable {
+    IERC20 public stablecoin; // USDT or USDC contract
+    address public minter; // Backend/bridge address
+    event StablecoinAddressUpdated(address indexed newStablecoin);
+    event MinterUpdated(address indexed newMinter);
+    event Minted(address indexed to, uint256 amount);
+    event Burned(address indexed from, uint256 amount);
+    event StablecoinWithdrawn(address indexed to, uint256 amount);
+    modifier onlyMinter() {
+        require(msg.sender == minter, "Not authorized");
+        _;
+    }
+    constructor(address initialOwner) ERC20("Aliada USD", "aUSD") Ownable(initialOwner) {
+        stablecoin = IERC20(address(0));
+        minter = address(0);
+    }
+    // Admin can update the stablecoin (e.g., USDT/USDC) contract address
+    function setStablecoin(address _stablecoin) external onlyOwner {
         stablecoin = IERC20(_stablecoin);
-        treasury = _treasury;
-        
-        // Configuración inicial de roles
-        _grantRole(DEFAULT_ADMIN_ROLE, admin);
-        _grantRole(MINTER_BURNER_ROLE, admin);
+        emit StablecoinAddressUpdated(_stablecoin);
     }
-
+    // Admin can update the minter address
+    function setMinter(address _minter) external onlyOwner {
+        minter = _minter;
+        emit MinterUpdated(_minter);
+    }
     /**
-     * @dev Mint FIAT tokens to a user, must transfer equivalent stablecoin from treasury first.
-     * @param to Address to receive the minted tokens
-     * @param amount Amount of tokens to mint
+     * @dev Mint AliadaUSD to user when stablecoin is deposited (off-chain or via backend)
+     * @param to The user address
+     * @param amount The amount to mint (must match stablecoin received)
      */
-    function mint(address to, uint256 amount) external onlyRole(MINTER_BURNER_ROLE) {
-        require(to != address(0), "Mint to zero address");
-        require(amount > 0, "Amount must be positive");
-        
-        uint256 treasuryBalance = stablecoin.balanceOf(treasury);
-        uint256 allowance = stablecoin.allowance(treasury, address(this));
-        require(treasuryBalance >= amount, "Insufficient stablecoin backing");
-        require(allowance >= amount, "Insufficient allowance");
-        
-        stablecoin.safeTransferFrom(treasury, address(this), amount);
+    function mint(address to, uint256 amount) external onlyMinter {
+        require(address(stablecoin) != address(0), "Stablecoin not set");
+        require(minter != address(0), "Minter not set");
         _mint(to, amount);
-        
-        emit TokensMinted(to, amount);
+        emit Minted(to, amount);
     }
-
     /**
-     * @dev Burn FIAT tokens from a user, and send equivalent stablecoin back to treasury.
-     * @param from Address to burn tokens from
-     * @param amount Amount of tokens to burn
+     * @dev Burn AliadaUSD from user when they redeem fiat (off-chain or via backend)
+     * @param from The user address
+     * @param amount The amount to burn (must match stablecoin sent out)
      */
-    function burn(address from, uint256 amount) external onlyRole(MINTER_BURNER_ROLE) {
-        require(from != address(0), "Burn from zero address");
-        require(amount > 0, "Amount must be positive");
-        
+    function burn(address from, uint256 amount) external onlyMinter {
+        require(address(stablecoin) != address(0), "Stablecoin not set");
+        require(minter != address(0), "Minter not set");
         _burn(from, amount);
-        stablecoin.safeTransfer(treasury, amount);
-        
-        emit TokensBurned(from, amount);
+        emit Burned(from, amount);
     }
-
     /**
-     * @dev Change the treasury address (admin only).
-     * @param newTreasury New treasury address
+     * @dev Withdraw stablecoin collateral (for off-ramping, admin only)
+     * @param to The recipient address
+     * @param amount The amount to withdraw
      */
-    function setTreasury(address newTreasury) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        require(newTreasury != address(0), "Invalid treasury address");
-        emit TreasuryChanged(treasury, newTreasury);
-        treasury = newTreasury;
+    function withdrawStablecoin(address to, uint256 amount) external onlyOwner {
+        require(stablecoin.transfer(to, amount), "Stablecoin transfer failed");
+        emit StablecoinWithdrawn(to, amount);
     }
-
-    /**
-     * @dev Emergency: Sweep stablecoins from contract to another address (admin only).
-     * @param to Address to send the stablecoins
-     * @param amount Amount to transfer
-     */
-    function emergencySweepStablecoin(address to, uint256 amount) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        require(to != address(0), "Invalid address");
-        uint256 balance = stablecoin.balanceOf(address(this));
-        require(balance >= amount, "Insufficient balance");
-        
-        stablecoin.safeTransfer(to, amount);
-        emit StablecoinSwept(to, amount);
-    }
-
-    /**
-     * @dev Get the stablecoin balance backing this token
-     * @return uint256 Balance of stablecoins held by this contract
-     */
-    function getStablecoinBacking() external view returns (uint256) {
-        return stablecoin.balanceOf(address(this));
-    }
+    // Users can check their aUSD balance as with any ERC20 token
 }
