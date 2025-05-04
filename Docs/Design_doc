@@ -1,0 +1,111 @@
+### NUA – APP DESIGN DOCUMENT
+
+---
+
+#### 1. Overview
+
+**Project Name:** NUA
+**Tagline:** Tu AliaDapp de confianza
+**Purpose:** Empower women in Latin America through a mobile-first, AI-powered and Web3-enabled platform focused on emotional, financial, spiritual and physical autonomy.
+
+---
+
+#### 2. Problem Statement
+
+Millions of women in LATAM lack consistent access to mental health support, financial education, emergency safety tools, and trusted digital communities. NUA aims to close that gap with a secure and human-centered solution.
+
+---
+
+#### 3. User Personas
+
+* **María, 25, Mexico City:** Young professional, dealing with anxiety, looking for emotional tools and a community.
+* **Valeria, 38, Bogotá:** Mother and survivor of violence, needs discreet emergency tools and psychological support.
+* **Luisa, 19, Lima:** Student exploring self-growth, seeks financial guidance and routine tracking.
+
+---
+
+#### 4. Key Features
+
+**Emotional AI Chat:** Personalized guidance, motivational support, mental clarity, empathetic tone.
+**Emergency Mode:** Fast activation with keyword or button, alerts trusted contacts, gives secure exit plans.
+**Life Areas Panel ("Explora tu poder")**:
+
+* Calma: Mental health, mindfulness, therapy access
+* Fuerza: Legal help, safety checklists, emergency resources
+* Dinero: Financial tools, budgeting, savings goals
+* Espíritu: Affirmations, numerology, guided rituals
+* Camino: Career tools, mentoring, workshops
+  **Community:** Anonymous feed, emotional reactions, mentorship roles.
+  **Token System:** Impact-based rewards, premium unlocks, donations.
+  **Personal Dashboard:** Progress tracker, goal setting, motivational feedback.
+  **Web3 Tech Stack:** Identity protection, verifiable interaction logs, scalable aid system.
+
+---
+
+#### 5. Technology Stack
+
+* **Frontend:** Flutter (cross-platform mobile)
+* **Backend:** Node.js + PostgreSQL + Supabase
+* **AI:** GPT-4 fine-tuned for emotional support + prompt chaining
+* **Blockchain:**
+
+  * **Camp (ERC-4337):** Frictionless smart accounts
+  * **Scroll (zkEVM):** Contract testing environment
+  * **Mantle:** Execution layer for smart contracts, tokenomics, and emergency protocols
+* **Security:** Encryption-at-rest, encrypted messaging, GDPR compliance, LFDP Mexico
+
+---
+
+#### 6. Architecture Overview
+
+* **User Interface:** Dynamic components with gender-sensitive UX
+* **AI Layer:** Modular NLU + behavioral context adaptation
+* **Web3 Contracts:**  DAO interaction potential, transparency logs
+* **Emergency Protocol:** One-click escape, encrypted routing, geo-based shelter lookup
+
+---
+
+#### 7. User Flows (Summarized)
+
+* **Onboarding:** Welcome → Personal goals → Geolocation → Avatar → Emergency config → IA Chat
+* **Daily use:** Open chat → Receive suggestion → Execute activity → Track progress
+* **Emergency:** Trigger → Alert protocol → Safe guidance → Log exit
+* **Community:** Browse → Post / React → Connect anonymously
+* **Premium Upgrade:** CTA → Plan view → Payment gateway → Access exclusive tools
+
+---
+
+#### 8. Metrics for Success
+
+* User retention rate after 30 days
+* Engagement with chat/rituals/tools
+* Emergency activation success rate
+* % of users achieving financial or emotional goals
+* Token usage and DAO contribution rates
+
+---
+
+#### 9. Roadmap (First 12 Months)
+
+**Q1:** Finalize branding, IA core, emergency flow MVP
+**Q2:** Launch beta with 1K users, feedback loop + AI tuning
+**Q3:** Web3 stack live, token economy activated
+**Q4:** Expansion to 4 countries, partnerships with NGOs/gov
+
+---
+
+#### 10. Missing Components / To Be Developed
+
+* Visual identity system (colors, typography, iconography)
+* Legal disclaimers & platform terms
+* Multilingual content layer (Spanish / Portuguese / English)
+* AI hallucination prevention guardrails
+* Scalable moderation protocol for community
+* Governance logic for tokenized decision-making (DAO layer)
+* Training program for psychological emergency escalation
+
+---
+
+#### 11. Call to Collaboration
+
+We are building not just a platform, but a movement. If you’re a builder, policymaker, developer, investor or survivor with a voice—let’s co-create the future of emotional infrastructure in LATAM and beyond.
