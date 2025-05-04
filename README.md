@@ -1,36 +1,127 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NUA: Plataforma Integral de Bienestar y Apoyo Inteligente
 
-## Getting Started
+## Smart contract Address 
+0xddaAd340b0f1Ef65169Ae5E41A8b10776a75482d
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+## Resumen
+
+**NUA** es una plataforma digital que acompaña y preveé la violencia encontra de las mujeres a través de herramientas de bienestar, organización financiera y acompañamiento emocional, todo en un solo espacio seguro y personalizado. Incorpora un agente de IA conversacional, protocolos de emergencia y acceso a redes de apoyo, encontrar patrones y a diferencia de otros sistemas, es capaz de prevenir la violencia.
+
+---
+
+
+## Visión y Objetivos
+
+- Apoya a las mujeres para gestionar su bienestar y finanzas de forma integral y segura.
+- Proveer acompañamiento emocional y orientación práctica en momentos clave.
+- Facilitar redes de apoyo y protocolos de emergencia.
+- Usar IA para personalizar la experiencia y brindar respuestas útiles, empáticas y seguras.
+
+---
+
+## Características Principales
+
+- **Onboarding interactivo**: Slides motivacionales y registro personalizado.
+- **Chat con agente AI**: Asistente conversacional para dudas, apoyo emocional, organización y guía.
+- **Soporte para texto, voz e imagen**: Interacción multimodal.
+- **Protocolos de emergencia**: Acceso rápido a recursos y contactos de ayuda.
+- **Organización financiera y bienestar**: Herramientas para planificar, registrar y reflexionar.
+- **Modo seguro y privacidad**: Opciones de anonimato y protección de datos.
+
+---
+
+## Arquitectura General
+
+```
+Frontend (Next.js/React)
+    |
+    v
+n8n (Orquestador de Flujos)
+    |
+    v
+Modelo AI Local (Ollama/Llama3)
+    |
+    v
+Servicios externos / Base de datos
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Stack Tecnológico
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Frontend:** Next.js (React), TypeScript, TailwindCSS
+- **Backend/Orquestador:** n8n
+- **Agente AI:** Modelo Llama3 local vía Ollama
+- **Base de datos:** (opcional) SQLite, PostgreSQL, etc.
+- **Infraestructura:** Docker, Vercel (frontend), local o cloud para n8n y modelo AI
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Estructura del Proyecto
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+nua-app/
+├── app/
+│   ├── page.tsx              # Landing y Onboarding
+│   ├── layout.tsx            # Layout principal
+│   ├── globals.css           # Estilos globales
+│   └── ...                   # Otras páginas y rutas
+├── components/
+│   ├── onboarding-screen.tsx # Slides de bienvenida
+│   ├── registration-form.tsx # Registro de usuario
+│   ├── chat-input.tsx        # Entrada de chat
+│   └── ...                   # Otros componentes
+├── hooks/                    # Custom React hooks
+├── public/                   # Imágenes y assets
+└── ...
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Flujos Principales
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 1. Onboarding
+- Slides informativos y motivacionales.
+- Registro de usuario.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 2. Chat con Agente AI
+- El usuario puede enviar texto, voz o imagen.
+- n8n recibe el mensaje, lo enruta según el tipo (texto, voz, imagen).
+- El mensaje es procesado por el modelo AI local (Llama3/Ollama).
+- La respuesta se envía de vuelta al usuario (texto o audio).
+
+### 3. Emergencia
+- Acceso rápido a protocolos y contactos de ayuda.
+
+---
+
+## Integración del Agente AI
+
+- El agente AI corre localmente usando Ollama y el modelo Llama3.
+- n8n se comunica con el modelo AI a través de un nodo HTTP Request:
+  - **POST** a `http://localhost:11434/api/generate`
+  - Body: `{ "model": "llama3", "prompt": "<mensaje del usuario>" }`
+- El flujo de n8n permite fácilmente cambiar el modelo o agregar lógica adicional (memoria, contexto, etc).
+
+---
+
+## Seguridad y Privacidad
+
+- **Datos sensibles:** Se manejan localmente y no se envían a servicios externos sin consentimiento.
+- **Modo seguro:** Opciones de anonimato y eliminación de historial.
+- **Infraestructura local:** El modelo AI y n8n pueden correr en la máquina del usuario para mantener la privacidad de nuestros usuarios.
+
+---
+
+## Roadmap
+
+- Mejorar la personalización del agente AI.
+- Integrar notificaciones push y recordatorios.
+- Añadir módulos de organización financiera y bienestar.
+- Escalar la infraestructura para uso multiusuario.
+- Certificar la app en temas de privacidad y seguridad.
+
+---
+
